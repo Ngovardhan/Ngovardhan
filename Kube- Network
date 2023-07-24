@@ -1,0 +1,79 @@
+                           NETWORK IN AKS
+kubeproxy
+we have in cluster 
+nodes-  its VM no of nodes 
+pods --deploy our application in order to make it accessable over the internet.
+    How it is accessable from the pod level to the internet
+   pods is nothing but which will be holding the appn wtr its DB, appn, frontEnd backEnd  
+
+How communication happened  -- >> each node to node  --->> each pod to pod
+
+
+                              AKS PLUGINS
+# Kubenet
+# Azure CNI
+
+while you create cluster when you selecting kubenet as a plugin u dont get option to choose Vnet and subnet  (it take automatically) recent update we can do that
+
+as per cust req we can create multiple nodepool inside the cluster
+each node has indival IP
+  ---> what IP's get allocated to pods
+
+
+when we choose kubenet as a plugin inside the nodepool only nodes will get the IP allocated from sub range
+POD will get an IP from the from the Local host (E0 netwrok ex: 
+
+                           ROUTE TABLES
+ex : inside A node 2 pods are there. they can connect easily(same range)  ____ how can B Node's pod connect with A node
+
+                Bcz nodes and pods IP ranges are different
+Ans: With the Route Tables and Natting
+
+Route table get attached to the Subnet
+every node get address same range . whatr which send req frm this range has to this 
+
+                            NATTING
+Convert the IP address one range to other range
+Now just imagine
+there is a VM which is outside of the Cluster. And appn deployed there or DB (nginx or apache called web server)
+                 
+How the request will be reaching from particular Pode to external VM 
+whatever req pod is sending that req will be sent this node by convrting IP from pod to node called Natting
+and req wil be sent from this particular node to this VM
+this VM can know only the req is came from this node but not from this particular pod
+
+we are adding pods overthere in bachend pools
+From VM to Cluster (particular POD) we use LB (internal LB)
+ILB having same IP from the same subnet  ><><><><    VM also having same IP from the same subnet
+
+                            UDR
+by using UDR we can restrict communication to specific IP's
+
+             
+
+                                                       CNI ( Advance Networking))
+There is route And natting bcz every nodes will get IP
+
+compare to kubenet CNI made it easy.without any complex network and all
+we can bring our own vnet and subnet
+Here nodes and pods will get the IP's from same subnet
+IP's will get reserved for the pods per each node based on the maximum pods per node we have choosen
+Need to have a preplan to use the CNI
+It's doesn't required any NAT or routing
+It support azure policy, windows nodes and virtual nodes
+We can add the new node pool to the same subnet ordiff subnet with in the same vnet thr CLI, can't add from portal
+
+why the IP are reserved here
+    Here nodes and pods will get the IP's from same subnet. so it is pre reserved
+
+Dynamic IP Allocation
+u will be 
+
+
+
+
+
+
+
+
+         
