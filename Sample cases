@@ -1,0 +1,39 @@
+                                     Common Senario 
+
+1] Cluster Failure
+
+There are few Scenario
+In multiple reason it will go to Failure stage
+
+sollution:  ask customer to update the cluster
+  --when we update the cluster there will be series of events happening
+
+Reasons
+
+Quota--
+  when customer to update the cluster they scaling the nodepool also
+_____________________________________________________________________________________________
+
+2]                 SUBNET IP's
+
+There are 2 network :     Kubenet v/s Azure CNI
+
+CNI- u creatd the CLUSTER and it only have 256 cluster (in nodepool also we give max pods)
+i have 256 IP's in subnet and i am creating 2 nodes with 2 IP And we give 100 IP's for max Pods (it will be 220
+                          And 4 IP's will preserved in every subnet  [256 -( 2+ 220 + 4) = 30 
+left with 30 IP in Subnet available
+          Now I am scaling my Nodepool  --------> Will the operation get succeed or failed
+
+Reason: It will get failed bcz remaining IP's are very less
+
+We can only check Error from KUSTOS and need to EDUCATE 
+
+Sollution : In the same VNET they have create new SUBNET with higher (500-600 as per cust req)
+. In that new subnet they can bring new Nodepool.
+Then we can micgrate  the work load from this subnet to that subnet. Then you can remove old nodepool
+  If they don't have any space in the Vnet also they have to Re-create NEW CLUSTER.
+_____________________________________________________________________________________________
+
+CONTROL PLANE PODS DOWN
+   we have kube-system namespace. here any pods, few pods like kube-proxy, k-connectivity, metric server, these kinds of pods go down if you are doing upgradation sometimes it will give you error like Control plane pods  are not working
+
